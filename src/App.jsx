@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useReducer, useState } from "react";
 import "./App.css";
 
 function App() {
@@ -6,19 +6,28 @@ function App() {
   const [time, setTime] = useState(0);
   const [records, setRecords] = useState([]);
   const [error, setError] = useState("");
+  const [total, setTotal] = useState(0);
 
   const addRecord = () => {
     setError("");
+
     //空の場合は登録しない
-    if (title === "" || time === "") return setError("入力してください");
+    if (title === "" || time === "" || time === 0)
+      return setError("入力してください");
 
     setRecords([
       ...records,
       {
         title: title,
-        time: time,
+        time: parseInt(time),
       },
     ]);
+
+    setTotal(
+      records.reduce((pre, current) => {
+        return pre + current.time;
+      }, parseInt(time))
+    );
 
     setTitle("");
     setTime(0);
@@ -47,6 +56,7 @@ function App() {
           />
         </div>
         <div>{error}</div>
+        <div>総合学習時間：{total}</div>
         <button onClick={() => addRecord()}>追加</button>
         {/* ??：addRecordだとダメだっけ、addRecord()なら動いたけど変数指定していない時もこれだっけという */}
       </div>
