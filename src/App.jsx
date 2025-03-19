@@ -1,12 +1,12 @@
-import { useReducer, useState } from "react";
+import { useState } from "react";
 import "./App.css";
 
 function App() {
   const [title, setTitle] = useState("");
-  const [time, setTime] = useState(0);
+  const [time, setTime] = useState("");
   const [records, setRecords] = useState([]);
   const [error, setError] = useState("");
-  const [total, setTotal] = useState(0);
+  const [total, setTotal] = useState(null);
 
   const addRecord = () => {
     setError("");
@@ -37,43 +37,50 @@ function App() {
     <>
       <h1>学習記録一覧</h1>
       <div>
-        <div>
+        <div style={{ display: "flex", "margin-bottom": "5px" }}>
           学習内容：
           <input
             type="text"
             value={title}
             placeholder="学習内容を記入してください"
             onChange={(event) => setTitle(event.target.value)} //MEMO：event.target.valueで詰まった
+            style={{ flex: 1 }} //MEMO：直で書く時って「""」で囲わないとエラー出るんだ...
           />
         </div>
-        <div>
-          学習時間：
+        <div style={{ display: "flex" }}>
+          <div>学習時間：</div>
           <input
             type="number"
             value={time}
             placeholder="学習時間を記入してください"
             onChange={(event) => setTime(event.target.value)}
+            style={{ flex: 1 }}
           />
         </div>
         <div>{error}</div>
-        <div>総合学習時間：{total}</div>
-        <button onClick={() => addRecord()}>追加</button>
+        <button onClick={() => addRecord()} style={{ width: "100%" }}>
+          追加
+        </button>
         {/* ??：addRecordだとダメだっけ、addRecord()なら動いたけど変数指定していない時もこれだっけという */}
       </div>
-      <div>
+      {/* <div>
         入力中：
         <div>学習内容：{title}</div>
         <div>学習時間：{time}時間</div>
+      </div> */}
+      <h3 style={{ "margin-top": "40px" }}>学習履歴</h3>
+      <div style={{ "margin-left": "20px" }}>
+        <div>総合学習時間：{total ? total + "時間" : "記録がありません"}</div>
+        <div>
+          {records.map((item, index) => {
+            return (
+              <p>
+                {item.title}：{item.time}時間
+              </p>
+            );
+          })}
+        </div>
       </div>
-      <ul>
-        {records.map((item) => {
-          return (
-            <li>
-              {item.title}：{item.time}時間
-            </li>
-          );
-        })}
-      </ul>
     </>
   );
 }
