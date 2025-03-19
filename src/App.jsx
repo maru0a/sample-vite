@@ -30,7 +30,7 @@ function App() {
     );
 
     setTitle("");
-    setTime(0);
+    setTime("");
   };
 
   return (
@@ -72,7 +72,7 @@ function App() {
       <div style={{ "margin-left": "20px" }}>
         <div>総合学習時間：{total ? total + "時間" : "記録がありません"}</div>
         <div>
-          {records.map((item, index) => {
+          {records.map((item) => {
             return (
               <p>
                 {item.title}：{item.time}時間
