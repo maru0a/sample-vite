@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
+import { getAllRecords } from "../utils/supabaseFunctions";
 
 function App() {
   const [title, setTitle] = useState("");
@@ -7,6 +8,14 @@ function App() {
   const [records, setRecords] = useState([]);
   const [error, setError] = useState("");
   const [total, setTotal] = useState(null);
+
+  useEffect(() => {
+    const getRecords = async () => {
+      const records = await getAllRecords();
+      console.log(records);
+    };
+    getRecords();
+  }, []);
 
   const addRecord = () => {
     setError("");
