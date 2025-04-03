@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import "./App.css";
 import { getAllRecords } from "../utils/supabaseFunctions";
 
@@ -9,14 +9,33 @@ function App() {
   const [error, setError] = useState("");
   const [total, setTotal] = useState(null);
 
+  const [loading, setLoading] = useState(false);
+
+  /**
+   * データ取得
+   */
   useEffect(() => {
+    setLoading(true);
     const getRecords = async () => {
-      const records = await getAllRecords();
-      console.log(records);
+      const item = await getAllRecords();
+      setRecords(
+        item.data.map((record) => ({ title: record.title, time: record.time }))
+      );
+
+      setTotal(
+        item.data.reduce((pre, current) => {
+          return pre + current.time;
+        }, parseInt(0))
+      );
+      setLoading(false);
     };
     getRecords();
+    // setLoading(false); ここに書いたら、getRecordsの処理が走ってる時に先にfalseになっちゃうんだ..
   }, []);
 
+  /**
+   * 入力値を登録
+   */
   const addRecord = () => {
     setError("");
 
@@ -78,18 +97,24 @@ function App() {
         <div>学習時間：{time}時間</div>
       </div> */}
       <h3 style={{ "margin-top": "40px" }}>学習履歴</h3>
-      <div style={{ "margin-left": "20px" }}>
-        <div>総合学習時間：{total ? total + "時間" : "記録がありません"}</div>
-        <div>
-          {records.map((item) => {
-            return (
-              <p>
-                {item.title}：{item.time}時間
-              </p>
-            );
-          })}
+      {loading && <div>loading...</div>}
+      {!loading && records && (
+        <div style={{ "margin-left": "20px" }}>
+          <div>
+            総合学習時間：
+            {total ? total + "時間" : "記録がありません"}
+          </div>
+          <div>
+            {records.map((item, key) => {
+              return (
+                <p key={key}>
+                  {item.title}：{item.time}時間
+                </p>
+              );
+            })}
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 }
