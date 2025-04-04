@@ -1,6 +1,10 @@
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
-import { getAllRecords } from "../utils/supabaseFunctions";
+import {
+  getAllRecords,
+  addRecord,
+  deleteRecord,
+} from "../utils/supabaseFunctions";
 
 function App() {
   const [title, setTitle] = useState("");
@@ -8,7 +12,6 @@ function App() {
   const [records, setRecords] = useState([]);
   const [error, setError] = useState("");
   const [total, setTotal] = useState(null);
-
   const [loading, setLoading] = useState(false);
 
   /**
@@ -17,13 +20,11 @@ function App() {
   useEffect(() => {
     setLoading(true);
     const getRecords = async () => {
-      const item = await getAllRecords();
-      setRecords(
-        item.data.map((record) => ({ title: record.title, time: record.time }))
-      );
+      const items = await getAllRecords();
+      setRecords(items.data);
 
       setTotal(
-        item.data.reduce((pre, current) => {
+        items.data.reduce((pre, current) => {
           return pre + current.time;
         }, parseInt(0))
       );
@@ -36,13 +37,14 @@ function App() {
   /**
    * 入力値を登録
    */
-  const addRecord = () => {
+  const addItem = () => {
     setError("");
 
     //空の場合は登録しない
     if (title === "" || time === "" || time === 0)
       return setError("入力してください");
 
+    addRecord(title, parseInt(time));
     setRecords([
       ...records,
       {
@@ -59,6 +61,19 @@ function App() {
 
     setTitle("");
     setTime("");
+  };
+
+  /**
+   * 削除処理
+   */
+  const deleteItem = (id) => {
+    deleteRecord(id);
+    setRecords((records) => {
+      //memo：書くの苦戦した
+      return records.filter((record) => {
+        return record.id !== id;
+      });
+    });
   };
 
   return (
@@ -86,7 +101,7 @@ function App() {
           />
         </div>
         <div>{error}</div>
-        <button onClick={() => addRecord()} style={{ width: "100%" }}>
+        <button onClick={() => addItem()} style={{ width: "100%" }}>
           追加
         </button>
         {/* ??：addRecordだとダメだっけ、addRecord()なら動いたけど変数指定していない時もこれだっけという */}
@@ -98,7 +113,7 @@ function App() {
       </div> */}
       <h3 style={{ "margin-top": "40px" }}>学習履歴</h3>
       {loading && <div>loading...</div>}
-      {!loading && records && (
+      {!loading && (
         <div style={{ "margin-left": "20px" }}>
           <div>
             総合学習時間：
@@ -107,9 +122,13 @@ function App() {
           <div>
             {records.map((item, key) => {
               return (
-                <p key={key}>
-                  {item.title}：{item.time}時間
-                </p>
+                <>
+                  <p key={key}>
+                    {item.title}：{item.time}時間
+                  </p>
+                  <div>{item.id}</div>
+                  <button onClick={() => deleteItem(item.id)}>削除</button>
+                </>
               );
             })}
           </div>
