@@ -111,13 +111,13 @@ function App() {
         <div>学習内容：{title}</div>
         <div>学習時間：{time}時間</div>
       </div> */}
-      <h3 style={{ "margin-top": "40px" }}>学習履歴</h3>
+      <h3 style={{ "margin-top": "40px" }}>履歴</h3>
       {loading && <div>loading...</div>}
       {!loading && (
         <div style={{ "margin-left": "20px" }}>
           <div>
             総合学習時間：
-            {total ? total + "時間" : "記録がありません"}
+            {total ? total + "時間" : "記録がありません。"}
           </div>
           <div>
             {records.map((item, key) => {
