@@ -17,17 +17,25 @@ jobs:
         run: npm install
       - name: Run build
         run: npm run build
+      # - name: Export build artifact path
+      #   id: export
+      #   run: echo "path=dist" >> $GITHUB_OUTPUT  # distフォルダがbuild成果物
+      # - name: Upload artifact
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: build-artifact
+      #     path: dist 
 
   deploy:
     name: deploy
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: build-artifact
-          path: dist
+      # - name: Download artifact
+      #   uses: actions/download-artifact@v4
+      #   with:
+      #     name: build-artifact
+      #     path: dist
 
       - name: Install Firebase CLI
         run: npm install -g firebase-tools
