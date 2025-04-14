@@ -25,12 +25,11 @@ jobs:
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v3
-      - name: Deploy to Firebase Hosting
-        uses: w9jds/firebase-action@v13
-        with:
-          args: deploy --only hosting
+      - name: deploy to Firebase Hosting
+        run: |
+            firebase deploy --token $FIREBASE_TOKEN
         env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+            FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
       # - name: delete GOOGLE_APPLICATION_CREDENTIALS
       #   run: rm $GOOGLE_APPLICATION_CREDENTIALS
       #   if: ${{ always() }}
