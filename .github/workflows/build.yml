@@ -3,7 +3,7 @@ name: Build and Deploy to Firebase Hosting
 on:
   push:
     branches:
-      - main
+      - develop_issues/task2
 
 jobs:
   build:
