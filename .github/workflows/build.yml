@@ -26,8 +26,9 @@ jobs:
       - name: Checkout the repo
         uses: actions/checkout@v3
       - name: Deploy to Firebase Hosting
-        run: |
-          ./node_modules/.bin/firebase deploy --only hosting
+        uses: w9jds/firebase-action@v13
+        with:
+          args: deploy --only hosting
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
       # - name: delete GOOGLE_APPLICATION_CREDENTIALS
