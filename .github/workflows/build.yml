@@ -30,7 +30,7 @@ jobs:
         with:
           node-version: "18"
           cache: "npm"
-          cache-dependency-path: ./package-lock.json
+          cache-dependency-path: ./sample-vite/package-lock.json
       - name: Install firebase-tools
         run: npm install --save-dev firebase-tools
       - name: Decode Firebase service account key
