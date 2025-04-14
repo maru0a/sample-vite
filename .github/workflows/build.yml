@@ -25,20 +25,20 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Setup Node.js and cache
+      - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
           node-version: "18"
-          cache: "npm"
-          cache-dependency-path: ./sample-vite/package-lock.json
+          # cache: "npm"
+          # cache-dependency-path: ./sample-vite/package-lock.json
       - name: Install firebase-tools
         run: npm install --save-dev firebase-tools
-      - name: Decode Firebase service account key
-        run: |
-          echo "${{ secrets.FIREBASE_KEY }}" | base64 -d > ./firebase-key.json
-          echo "GOOGLE_APPLICATION_CREDENTIALS=${{ github.workspace }}/firebase-key.json" >> $GITHUB_ENV
-      - name: change space
-        run: ./node_modules/.bin/firebase use ${{ secrets.FIREBASE_PROJECT_ID }}
+      # - name: Decode Firebase service account key
+      #   run: |
+      #     echo "${{ secrets.FIREBASE_KEY }}" | base64 -d > ./firebase-key.json
+      #     echo "GOOGLE_APPLICATION_CREDENTIALS=${{ github.workspace }}/firebase-key.json" >> $GITHUB_ENV
+      # - name: change space
+      #   run: ./node_modules/.bin/firebase use ${{ secrets.FIREBASE_PROJECT_ID }}
       - name: Deploy to Firebase Hosting
         run: |
           ./node_modules/.bin/firebase deploy --only hosting,firestore
