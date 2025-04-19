@@ -78,11 +78,12 @@ function App() {
 
   return (
     <>
-      <h1>学習記録一覧</h1>
+      <h1 data-testid="title">学習記録一覧</h1>
       <div>
-        <div style={{ display: "flex", "margin-bottom": "5px" }}>
+        <div style={{ display: "flex", marginBottom: "5px" }}>
           学習内容：
           <input
+            data-testid="inputTitle"
             type="text"
             value={title}
             placeholder="学習内容を記入してください"
@@ -93,6 +94,7 @@ function App() {
         <div style={{ display: "flex" }}>
           <div>学習時間：</div>
           <input
+            data-testid="inputTime"
             type="number"
             value={time}
             placeholder="学習時間を記入してください"
@@ -101,7 +103,11 @@ function App() {
           />
         </div>
         <div>{error}</div>
-        <button onClick={() => addItem()} style={{ width: "100%" }}>
+        <button
+          data-testid="addButton"
+          onClick={() => addItem()}
+          style={{ width: "100%" }}
+        >
           追加
         </button>
         {/* ??：addRecordだとダメだっけ、addRecord()なら動いたけど変数指定していない時もこれだっけという */}
@@ -111,10 +117,10 @@ function App() {
         <div>学習内容：{title}</div>
         <div>学習時間：{time}時間</div>
       </div> */}
-      <h3 style={{ "margin-top": "40px" }}>履歴</h3>
+      <h3 style={{ marginTop: "40px" }}>履歴</h3>
       {loading && <div>loading...</div>}
       {!loading && (
-        <div style={{ "margin-left": "20px" }}>
+        <div style={{ marginLeft: "20px" }}>
           <div>
             総合学習時間：
             {total ? total + "時間" : "記録がありません。"}
